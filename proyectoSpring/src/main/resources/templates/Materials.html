@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Materials</title>
+</head>
+<body>
+<div class="row center-card" th:fragment="material">
+    <div th:if="${#lists.isEmpty(materials)}">
+        Without materials
+    </div>
+    <div class="col-12 card mb3" th:each="mat, stat: ${materials}">
+        <h1 class="fsxl mt1" th:text="${mat.title}"></h1>
+        <hr>
+        <div id="editor-content" th:utext="${mat.description}"></div>
+    </div>
+</div>
+</body>
+</html>

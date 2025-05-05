@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+<div class="row" th:fragment="posts">
+  <div th:if="${#lists.isEmpty(posts)}">
+    Uppss....There is nothing to see here
+  </div>
+  <div class="col-12" th:each="post, stat : ${posts}">
+    <div class="card card-post">
+      <div class="row card-post">
+        <div class="col-3">
+          <div class="row">
+            <div class="col-12">
+              <img height="45" width="45" th:src="${post.imageLink}" alt="..." />
+            </div>
+            <div class="col-12">
+              <a th:href="'/profile/'+${post.userId}" class="name-post" th:text="${post.userName}"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="row">
+            <div class="col-12 centerTags">
+              <a th:href="${dirView+post.postId}" th:text="${post.postTitle}"></a>
+            </div>
+            <div class="col-12 colAn">
+              <p class="textAn" th:text="${numRes + post.totalComments}"></p>
+            </div>
+            <div class="col-12 colAn">
+              <div th:insert="~{PostTags::postTags}"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

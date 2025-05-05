@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+body {
+    background: #67a4ff;
+}
+
+.card-total{
+    margin-top: 5vh;
+    align-content: center;
+}
+
+.bot-sub{
+    margin-top: 3vh;
+}
+
+.title-text{
+    font-size: large;
+    font-family: "Roboto Mono", sans-serif;
+}
+
+.titleTitle{
+    font-family: "Roboto Mono", sans-serif;
+    font-size: x-large;
+}
+
+.mt1{
+
+}

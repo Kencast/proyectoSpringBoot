@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/reset.css">
+    <title>Change Profile</title>
+</head>
+<div th:insert="~{Nav::navbar}" ></div>
+
+<body>
+<div class="wrapper">
+    <div class="logo">
+        <img src="https://cdn1.iconfinder.com/data/icons/anchor/128/computer.png" alt="">
+    </div>
+    <div class="text-center mt-4 name">
+        Modify Profile
+    </div>
+    <form class="p-3 mt-3" th:action="@{/profile/change}" method="post" th:object="${change}" enctype="multipart/form-data">
+        <div class="form-field d-flex align-items-center">
+            <span class="far fa-user"></span>
+            <input type="text" name="name" id="name" placeholder="Name" th:field="*{name}">
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <span class="far fa-user"></span>
+            <input th:field="*{firstName}" type="text" name="firstLastName" id="firstLastName" placeholder="First Last Name">
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <span class="far fa-user"></span>
+            <input th:field="*{secondName}" type="text" name="secondLastName" id="secondLastName" placeholder="Second Last Name">
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <span class="far fa-user"></span>
+            <input th:field="*{userName}" type="text" name="userName" id="userName" placeholder="Username">
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <span class="fas fa-globe"></span> <!-- icon to represent a country or globe -->
+            <input th:field="*{country}" type="text" name="country" id="country" placeholder="Country">
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <span class="fas fa-envelope"></span> <!-- icon representing an envelope for email -->
+            <input th:field="*{email}" type="email" name="email" id="email" placeholder="Email">
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <span class="fas fa-envelope"></span> <!-- icon representing an envelope for email -->
+            <input th:field="*{password}" type="password" name="password" id="password" placeholder="Password">
+        </div>
+        <div class="form-field d-flex align-items-center">
+            <div class="container">
+                <div class="folder">
+                    <div class="top"></div>
+                    <div class="bottom"></div>
+                </div>
+                <label class="custom-file-upload">
+                    <input class="title" type="file" accept=".jpg, .png, .jpeg" th:field="*{profilePicture}" />
+                    Choose a file to update your picture
+                </label>
+            </div>
+        </div>
+        <button class="btn mt-3" type="submit">Confirm</button>
+        <br>
+        <div th:if="${error}">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading" > There was an error, please check your data and try again. </h4>
+            </div>
+        </div>
+        <div th:if="${#fields.hasErrors()}">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Errors detected</h4>
+                <div th:if="${#fields.hasErrors('name')}"> <hr> <p th:errors="*{name}"></p> </div>
+                <div th:if="${#fields.hasErrors('firstName')}"> <hr> <p th:errors="*{firstName}"></p> </div>
+                <div th:if="${#fields.hasErrors('secondName')}"> <hr> <p th:errors="*{secondName}"></p> </div>
+                <div th:if="${#fields.hasErrors('userName')}"> <hr> <p th:errors="*{userName}"></p> </div>
+                <div th:if="${#fields.hasErrors('country')}"> <hr> <p th:errors="*{country}"></p> </div>
+                <div th:if="${#fields.hasErrors('email')}" > <hr> <p th:errors="*{email}"></p>  </div>
+                <div th:if="${#fields.hasErrors('password')}"> <hr> <p th:errors="*{password}"></p> </div>
+            </div>
+        </div>
+    </form>
+    <div class="text-center fs-6">
+        <a href="/login">Login</a>
+    </div>
+</div>
+</body>
+</html>

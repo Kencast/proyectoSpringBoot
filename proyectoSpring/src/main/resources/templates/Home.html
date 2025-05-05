@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/stylesStart.css">
+    <title>OCI Code</title>
+</head>
+<div th:insert="~{Nav::navbar}" ></div>
+<body>
+    <div class="row">
+        <div class="col-2 titulos">
+            <div class="card left-card">
+                <h1>Trending tags</h1>
+                <br>
+                <div th:insert="~{TrendingTags::trenTags}"></div>
+            </div>
+        </div>
+        <div class="col-9 titulos">
+            <div class="card center-card">
+                <h1 th:text="${titular}"></h1>
+                <br>
+                <div th:insert="~{Posts::posts}"></div>
+            </div>
+        </div>
+        <div class="col-1 titulos">
+            <div class="card right-card">
+                <div class="row">
+                    <div class="col-12 colDer">
+                        <a class="textDer" th:href="${rutaCre}">
+                            <img height="50" width="50" src="https://s2.qwant.com/thumbr/474x474/d/5/cc97e8a3a15d9c1950944433fe1383a58050486cf08bf565dc63485bbeed79/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.x0c2r6gcQ86752CKECuIrAHaHa%26pid%3DApi&q=0&b=1&p=0&a=0" alt="...">
+                            <p th:text="${btoNew}"></p>
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

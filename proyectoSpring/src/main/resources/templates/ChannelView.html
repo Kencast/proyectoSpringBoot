@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/stylesStart.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css">
+    <title>Channel View</title>
+</head>
+<div th:insert="~{Nav::navbar}"></div>
+<body>
+<div th:if="${channel == null}">
+    <div class="card error-card">
+        <h1>404 Not Found</h1>
+        <hr>
+        <h2> Sorry, that page never return from a walk around de Belgrade</h2>
+    </div>
+</div>
+<div class="row" th:if="${channel != null}">
+    <div class="col-2 titulos"> </div>
+    <div class="col-9 titulos">
+        <div class="row center-card">
+            <div class="col-12 card">
+                <h1 class="fsxl" th:text="${channel.title}"></h1>
+                <br>
+                <div id="editor-content" th:utext="${channel.description}"></div>
+                <div class="row mt1">
+                    <a class="col-6 tal tdn mb1" th:href="'/profile/'+${channel.personId}">
+                        <img height="35" width="35" th:src="${channel.imageLink}" alt="...">
+                        <span th:text="${channel.userName}"></span>
+                    </a>
+                    <div class="col-6 tar tdn mb1">
+                        <span th:text="${channel.publicationDate}"></span>
+                        <img height="30" width="30" src="https://firebasestorage.googleapis.com/v0/b/nature-d45bb.appspot.com/o/assets%2Fclock.png?alt=media&token=9eaccb50-5904-4a4d-950e-e4973133950d" alt="...">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt1 card">
+                <h1> Materials </h1>
+                <form method="post" th:action="@{/channels/addMaterial}" th:object="${newMaterial}" th:if="${userId == channel.personId}">
+                    <hr>
+                    <label class="textAn" >Add a new material</label>
+                    <br>
+                    <input type="hidden" th:name="channelId" th:value="${channelId}"/>
+                    <div class="form-group">
+                        <label for="title" class="title-text textAn mt2">Title:</label>
+                        <input type="text" id="title" placeholder="Title" autocomplete="off" class="form-control"
+                               th:field="*{title}"/>
+                    </div>
+                    <br>
+                    <div class="form-group card-total">
+                        <label class="title-text textAn">Content:</label>
+                        <textarea id="editor" th:field="*{description}" ></textarea>
+                    </div>
+                    <button class="btn btn-primary bot-sub mt1">Create Material</button>
+                    <div th:if="${errorMaterial}">
+                        <div class="alert alert-success mt1" role="alert">
+                            <h4 class="alert-heading" > There was an error, please check your data and try again. </h4>
+                        </div>
+                    </div>
+                    <div th:if="${#fields.hasErrors()}">
+                        <div class="alert alert-success mt1" role="alert">
+                            <h4 class="alert-heading">Errors detected</h4>
+                            <div th:if="${#fields.hasErrors('title')}"> <hr> <p th:errors="*{title}"></p> </div>
+                            <div th:if="${#fields.hasErrors('description')}"> <hr> <p th:errors="*{description}"></p> </div>
+                        </div>
+                    </div>
+                </form>
+                <div th:insert="~{Materials::material}"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-1 titulos" th:if="${userId == channel.personId}">
+        <div class="card right-card">
+            <div class="row">
+                <div class="col-12 colDer">
+                    <form th:action="@{/channels/delete}" method="post">
+                        <input type="hidden" th:name="channelId" th:value="${channelId}">
+                        <button class="textDer bot-sin">
+                            <img height="35" width="35" src="https://firebasestorage.googleapis.com/v0/b/nature-d45bb.appspot.com/o/assets%2Fdelete.png?alt=media&token=9e5a8305-77e7-4446-a807-decfa3ec9028" alt="...">
+                            <br>
+                            <span class="mt1">Delete Channel</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.0/"
+        }
+    }
+</script>
+<script type="module">
+    import {
+        ClassicEditor,
+        Essentials,
+        Paragraph,
+        Bold,
+        Italic,
+        Font,
+        Link,
+        Image,
+        ImageResize,
+        ImageStyle,
+        ImageInsert
+    } from 'ckeditor5';
+    ClassicEditor
+        .create( document.querySelector( '#editor' ), {
+            plugins: [ Essentials, Paragraph, Bold, Italic, Font, Link, Image, ImageStyle, ImageResize, ImageInsert],
+            toolbar: [
+                'undo', 'redo', '|', 'bold', 'italic', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|','link', 'insertImageViaUrl'
+            ],
+            link: {
+                addTargetToExternalLinks: true
+            }
+        } )
+        .then( editor => {
+            window.editor = editor;
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+
+</body>
+</html>

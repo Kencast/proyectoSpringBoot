@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<nav class="navbar bg-body-tertiary" th:fragment="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://lh4.googleusercontent.com/B1s5QHz4UxcF15ODtmlhEGTHjtCg5v15tJutd-OYf-tnaPQWPL-WmO1UA4n3ekrcdEO2UFZYQ0YJG-Kkul_rE5c=w16383" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                OCI
+            </a>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/home">Post</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/channels">Channels</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" th:href="'/profile/'+${userId}">Profile</a>
+                </li>
+                <li class="nav-item" th:if="${userId} == 0">
+                    <a class="nav-link" aria-current="page" href="/login">Login</a>
+                </li>
+              </ul>
+        </div>
+</nav>
+</body>
+
+</html>
+

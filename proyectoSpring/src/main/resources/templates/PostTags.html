@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+</head>
+<body>
+    <div class="row row-tag" th:fragment="postTags">
+        <div class="textTag" th:if="${#lists.isEmpty(post.tags)}">
+            No tags
+        </div>
+        <div class="col-2 card card-tag" th:each="tag, stat : ${post.tags}">
+            <p class="textTag" th:text="${tag}"></p>
+        </div>
+    </div>
+</body>
+</html>

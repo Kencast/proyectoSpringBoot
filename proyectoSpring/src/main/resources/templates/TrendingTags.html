@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trending Tags</title>
+</head>
+<body>
+  <div class="row" th:fragment="trenTags">
+    <div th:if="${#lists.isEmpty(tren)}">
+      No tags
+    </div>
+    <div class="col-11 card card-tag colAn" th:each="tag, stat : ${tren}">
+      <p class="textTag" th:text="${tag.tagName}"></p>
+      <br>
+      <p class="textTag" th:text="'Popularity: '+${tag.popularity}"></p>
+    </div>
+  </div>
+</body>
+</html>
