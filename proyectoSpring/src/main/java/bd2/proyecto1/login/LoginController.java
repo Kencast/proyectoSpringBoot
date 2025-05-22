@@ -22,7 +22,7 @@ public class LoginController {
     @Autowired
     private RestTemplate restTemplate;
     @Value("${app.urlDatabase}")
-    private String apiUrl;
+    String apiUrl;
 
     @GetMapping()
     public String login(Model model) {

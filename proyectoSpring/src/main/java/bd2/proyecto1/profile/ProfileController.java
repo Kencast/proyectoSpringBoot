@@ -34,7 +34,7 @@ public class ProfileController {
     @Autowired
     private RestTemplate restTemplate;
     @Value("${app.urlDatabase}")
-    private String apiUrl;
+    String apiUrl;
 
     public ProfilePerson obtainProfile(Long id) {
         try {

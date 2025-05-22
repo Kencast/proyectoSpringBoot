@@ -26,7 +26,7 @@ public class ChannelController {
     @Autowired
     private RestTemplate restTemplate;
     @Value("${app.urlDatabase}")
-    private String apiUrl;
+    String apiUrl;
 
     public List<TagPopularityDTO> obtainTrenTags(){
         try{

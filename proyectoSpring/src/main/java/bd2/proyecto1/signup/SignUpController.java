@@ -24,7 +24,7 @@ public class SignUpController {
     @Autowired
     private RestTemplate restTemplate;
     @Value("${app.urlDatabase}")
-    private String apiUrl;
+    String apiUrl;
 
     @GetMapping()
     public String signUp(Model model) {
