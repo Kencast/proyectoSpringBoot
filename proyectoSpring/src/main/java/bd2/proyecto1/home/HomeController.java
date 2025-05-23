@@ -25,7 +25,7 @@ public class HomeController {
     @Autowired
     private RestTemplate restTemplate;
     @Value("${app.urlDatabase}")
-    private String apiUrl;
+    public String apiUrl;
 
     public List<PostInfoDTO> obtainPosts(){
         try{

@@ -20,6 +20,15 @@ public class Material {
 
     private Long channelId;
 
+    public Material(Long id, String title, String description, Long channelId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.channelId = channelId;
+    }
+
+    public Material() {}
+
     public String getTitle() {
         return title;
     }

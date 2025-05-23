@@ -171,7 +171,7 @@ public class ProfileController {
             });
             return "ChangeProfile";
         }
-        if(!signUpInfo.getProfilePicture().isEmpty()){
+        if(!signUpInfo.getProfilePicture().isEmpty()) {
             try{
                 String url=storageService.uploadImage(signUpInfo.getProfilePicture(), "user"+model.getAttribute("userId"));
                 signUpInfo.setImageLink(url);

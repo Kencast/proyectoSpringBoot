@@ -14,7 +14,9 @@ import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -275,42 +277,41 @@ class ProfileControllerTest {
     }
 
 
-    /*@Test
-    void changeProfilePostWithErrorsReturnsForm() {
+    @Test
+    void keepInChangeProfilePageWhenHasErrorsIsTrue() {
         SignUpInfo signUpInfo = new SignUpInfo();
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
 
         String result = profileController.changeProfile(model, signUpInfo, bindingResult);
-        assertEquals("ChangeProfile", resuslt);
-    }*/
+        assertEquals("ChangeProfile", result);
+    }
 
-    /*
     @Test
-    void changeProfilePostWithImageUploadFailsSetsError() throws Exception {
+    void changeProfilePostWithImageUploadFails() throws IOException, InterruptedException {
         SignUpInfo signUpInfo = mock(SignUpInfo.class);
-        when(signUpInfo.getProfilePicture()).thenReturn(mock(org.springframework.web.multipart.MultipartFile.class));
-        when(signUpInfo.getProfilePicture().isEmpty()).thenReturn(false);
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        when(signUpInfo.getProfilePicture()).thenReturn(multipartFile);
+        when(multipartFile.isEmpty()).thenReturn(false);
         when(model.getAttribute("userId")).thenReturn(1L);
-        doThrow(new RuntimeException()).when(storageService).uploadImage(any(), any());
-        BindingResult bindingResult = mock(BindingResult.class);
-        when(bindingResult.hasErrors()).thenReturn(false);
-
-        String result = profileController.changeProfile(model, signUpInfo, bindingResult);
+        doThrow(new RuntimeException()).when(storageService).uploadImage(any(), eq("user1"));
+        BindingResult bindingsResults = mock(BindingResult.class);
+        when(bindingsResults.hasErrors()).thenReturn(false);
+        String result = profileController.changeProfile(model, signUpInfo, bindingsResults);
         verify(model).addAttribute("error", true);
         assertEquals("ChangeProfile", result);
     }
 
     @Test
-    void changeProfilePostSuccessRedirects() {
-        SignUpInfo signUpInfo = new SignUpInfo();
-        signUpInfo.setProfilePicture(null); // to skip upload
+    void changeProfilePostSuccessRedirects() throws IOException, InterruptedException {
+        SignUpInfo signUpInfo = mock(SignUpInfo.class);
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        when(signUpInfo.getProfilePicture()).thenReturn(multipartFile);
+        when(multipartFile.isEmpty()).thenReturn(false);
         when(model.getAttribute("userId")).thenReturn(1L);
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
-
-        doNothing().when(restTemplate).put(eq(apiUrl + "user/update/1"), eq(signUpInfo));
-
+        when(storageService.uploadImage(any(),eq("user1"))).thenReturn("https://cdn.discordapp.com/attachments/1220481283268808724/1374861435552792636/th.png?ex=6831913d&is=68303fbd&hm=338d810c4abf23508b7677cece913ec3baf3995a324d8f9bb87e289ec558293f&");
         String result = profileController.changeProfile(model, signUpInfo, bindingResult);
         assertEquals("redirect:/profile/1", result);
     }
@@ -318,11 +319,9 @@ class ProfileControllerTest {
     @Test
     void deleteProfileSuccess() {
         when(model.getAttribute("userId")).thenReturn(1L);
-        when(restTemplate.postForEntity(eq(apiUrl + "user/delete"), eq(1L), eq(String.class)))
-                .thenReturn(ResponseEntity.ok("deleted"));
-
-        String result = profileController.deleteProfile(model);
-
+        ProfileController spyController = Mockito.spy(profileController);
+        doReturn(true).when(spyController).deletePerson(1L);
+        String result = spyController.deleteProfile(model);
         verify(globalAttributes).setUserId(0L);
         assertEquals("redirect:/login", result);
     }
@@ -330,33 +329,9 @@ class ProfileControllerTest {
     @Test
     void deleteProfileFail() {
         when(model.getAttribute("userId")).thenReturn(1L);
-        when(restTemplate.postForEntity(eq(apiUrl + "user/delete"), eq(1L), eq(String.class)))
-                .thenThrow(new RuntimeException());
-
-        String result = profileController.deleteProfile(model);
+        ProfileController spyProfileController = Mockito.spy(ProfileController.class);
+        doReturn(false).when(spyProfileController).deletePerson(any(Long.class));
+        String result = spyProfileController.deleteProfile(model);
         assertEquals("redirect:/profile/1", result);
-    }*/
-
-    /*@Test
-    void profileLoadsCorrectAttributes() {
-        when(model.getAttribute("userId")).thenReturn(5L);
-        ProfilePerson profile = new ProfilePerson();
-        when(restTemplate.getForEntity(eq(apiUrl + "user/profile/1"), eq(ProfilePerson.class)))
-                .thenReturn(ResponseEntity.ok(profile));
-        when(restTemplate.exchange(eq(apiUrl + "follow/following/1"), eq(HttpMethod.GET), isNull(),
-                ArgumentMatchers.<ParameterizedTypeReference<List<UserSimple>>>any()))
-                .thenReturn(ResponseEntity.ok(List.of(new UserSimple())));
-        when(restTemplate.getForEntity(eq(apiUrl + "follow/validate/5/1"), eq(Boolean.class)))
-                .thenReturn(ResponseEntity.ok(true));
-
-        String result = profileController.profile(model, 1L);
-
-        verify(model).addAttribute("profileId", 1L);
-        verify(model).addAttribute(eq("users"), anyList());
-        verify(model).addAttribute("error", false);
-        verify(model).addAttribute("profile", profile);
-        verify(model).addAttribute("isFollowing", true);
-        assertEquals("Profile", result);
-    }*/
-
+    }
 }

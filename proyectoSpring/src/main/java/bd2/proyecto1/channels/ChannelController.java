@@ -185,7 +185,7 @@ public class ChannelController {
         model.addAttribute("newMaterial",new Material());
         model.addAttribute("errorMaterial",false);
         List<Material> materials = obtainMaterial(id);
-        System.out.println(materials.size());
+        //System.out.println(materials.size());
         model.addAttribute("materials",materials);
         PostViewDTO channel = obtainChannelView(id);
         model.addAttribute("channel",channel);
@@ -206,7 +206,7 @@ public class ChannelController {
             model.addAttribute("channel",channel);
             return "ChannelView";
         }
-        System.out.println(id);
+        //System.out.println(id);
         material.setChannelId(id);
         if(!insertarMaterial(material)){
             model.addAttribute("channelId",id);
